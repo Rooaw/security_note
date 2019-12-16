@@ -2,4 +2,79 @@
 
 	域名收集
 		域名
-		
+		IP
+			ping
+		子域名	
+			主机头
+		whois查询域名信息
+		备案信息查询
+
+	子域名收集
+		顶级域名
+			com net org cn
+		子域名
+			二级子域名
+			三级子域名
+			多级子域名
+
+		迂回战术，无限靠近主域
+
+		挖掘工具
+			搜索引擎：site:sina.com
+			第三方网站查询：tool.chinaz.com/subdomain
+			证书透明度公开日志枚举： https://ctr.sh/、http://censys.io/
+			其他途径：phpinfo.me/domain、dns.aizhan.com
+
+	Web站点信息收集
+		CMS指纹识别
+			织梦、Discuz、Phpcms
+			在线工具：whatweb.bugscaner.com/look/、yunsee.com
+			本地工具：御剑、大禹
+		针对CMS漏洞查询
+			bugs.shuimugan.co
+			乌云漏洞库
+		敏感目录信息
+			御剑
+			wwwcsan命令行
+			dirb命令行
+			dirbuster扫描工具
+			WordPress-wpscan
+
+	端口信息收集
+		netstat -anbo 显示开放端口
+
+		nmap -A -v -T4 [IP] 探测
+
+		不留痕迹：tool.chinaz.com/port/
+
+		攻击：
+			远程连接服务端口：	
+				22、23、3389、5900、5632...
+		防御：
+			关闭
+			防火墙
+			更换密码
+			更新软件
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
