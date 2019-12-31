@@ -249,3 +249,5 @@ sql注入：
 
         less-6:
             sqlmpa.py -u 
+
+    sqlmap:
