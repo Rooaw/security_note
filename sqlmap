@@ -1,0 +1,42 @@
+
+
+直连数据库：
+	服务型数据库：
+		sqlmap.py -d "mysql://用户名:密码@IP:端口/数据库名" -f --banner --dbs --users
+	文件型数据库：
+		DBMS://数据库绝对路径()
+
+URL探测：
+	-u
+
+文件读取目标：
+	-l 
+	-x
+	-m 多行文本格式多个目标
+	-r 请求信息文件
+	-c 配置文件 sqlmap.conf
+
+google批量扫注入：
+
+
+获取数据库 banner 信息：
+ --banner
+获取指纹信息：
+	-f
+获取对应数据库：
+	--dbs
+当前用户：
+	--user
+
+设置请求参数：
+	HTTP 方法：
+		--method=PUT
+	POST 提交参数：
+		--data="id=1&name=a"
+ 
+设置参数分隔符：
+	--data="id=1;name=1" --param-del=";"
+	
+设置 cookie 头：
+	--cookie ""
+	--drop-set-cookie 忽略到来的set-cookie头
