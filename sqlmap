@@ -40,3 +40,24 @@ google批量扫注入：
 设置 cookie 头：
 	--cookie ""
 	--drop-set-cookie 忽略到来的set-cookie头
+
+设置user-agent：
+	默认 sqlmap/1.0-dev-xxxxx(http://sqlmap.org)
+	--level 3 默认检测
+	--user-agent="代理"伪造
+	--random-agent 随机
+
+设置host：
+	--level 5 默认对 host 进行检测
+	请求文件 host 后加 *
+
+设置referer：
+	--level 3
+
+设置额外http：
+	--header="host:www.target.com\nuser-agent:xxx" 必须用换行符分割
+
+
+
+
+	
