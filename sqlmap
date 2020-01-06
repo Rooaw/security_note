@@ -55,9 +55,78 @@ google批量扫注入：
 	--level 3
 
 设置额外http：
-	--header="host:www.target.com\nuser-agent:xxx" 必须用换行符分割
+	--headers="host:www.target.com\nuser-agent:xxx" 必须用换行符分割
+
+设置http协议认证：
+	--auth-type  
+		Basic
+		Digest
+		NTLM
+	--auth-cred
+		username:password
+
+	sqlmap.py -u "xx" --auth-type Basic --auth-cred "admin:12345"
+
+设置http代理：
+	隐藏真实ip
+	--proxy http:/ip[:端口]
+	--proxy-cred usernaem:pasword
+	--proxy-file 文件路径
+	--ignore-proxy 忽略系统范围内的http(s)代理服务器设置来针对本地网络的目标部分运行sqlmap时使用
 
 
+设置tor隐藏网络：
+	安装 tor 
+	开启 tor
+	查看服务
+	--tor
+	--tor-port
+	--tor-type=https
+	--check-tor
+
+设置延迟：
+	--delay 0.5 延迟0.5s
+
+设置超时：
+	--TIMEOUT 10.5
+	--retries 次数
+
+设置随机化参数：
+	--randomize 参数名称
+
+设置日志过滤目标：
+	-l burp.log --scope="(www)?\.target\.(com|net)" burp suite截断要保存到日志
+	--skip-rulencode 不进行url加密
 
 
-	
+3-7
+设置忽略401：
+	--ignore-401
+
+设置HTTP协议私钥：
+	--auth-file 文件名(pem格式的key_file)
+
+设置安全模式：
+	避免多次请求失败后销毁会话
+	--safe-url
+	--safe-post
+	--safe-req
+	--safe-freq
+
+设置忽略URL编码：
+	--skip-urlencode
+
+3-8
+持久HTTP连接：
+	--keep-alive
+
+不接收HTTP body：
+	盲注
+	--null-connection
+
+设置多线程：
+	--thread 个数 默认3个，最大10
+
+预测输出：
+	--predict-output
+	与线程设置不兼容

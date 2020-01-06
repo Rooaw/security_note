@@ -13,7 +13,7 @@
 		子域名	
 			主机头
 		whois查询域名信息
-		备案信息查询
+		备案信息查询 天眼查
 
 	子域名收集
 		顶级域名
@@ -26,7 +26,9 @@
 		迂回战术，无限靠近主域
 
 		挖掘工具
-			搜索引擎：site:sina.com
+			Layer
+			Sublist3r
+			搜索引擎枚举：site:sina.com
 			第三方网站查询：tool.chinaz.com/subdomain
 			证书透明度公开日志枚举： https://ctr.sh/、http://censys.io/
 			其他途径：phpinfo.me/domain、dns.aizhan.com
@@ -64,13 +66,14 @@
 
 	敏感信息收集：
 		Google hacking语法：
-			site
-			inurl
-			intext
-			filetype
-			intitle
-			link
-			info
+			site 指定域名
+			inurl url中存在关键字的网页
+			intext 网页正文中的关键字
+			filetype 指定文件类型
+			intitle 网页标题中的关键字
+			link 返回所有和link后域名做了连接的url
+			info 指定站点的一些基本信息
+			cache 搜索关于某些内容的缓存
 
 			数据库：exploit-db.com/ghdb/4818
 
