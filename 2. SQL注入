@@ -4,7 +4,9 @@ sql注入：
         select * from admin where username='admin' or 1=1  -- 'and password='用户输入的密码'
 
     数字型 
+        id=1 and 1=1
     字符型
+        id=1' and '1'='1
 
     注入遇到的问题：
         被添加斜杠：
